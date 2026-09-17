@@ -4,11 +4,16 @@
 #
 # One-time setup on npmjs.com: package -> Settings -> Trusted Publisher -> GitHub Actions,
 # repository ciceroyang/dsh-privacy-guard, workflow npm-publish.yml.
+#
+# Until that setup exists, this workflow is manual only: with a tag trigger a pushed
+# vX.Y.Z would fail here, and a publish workflow that swallows its own failure would be
+# the exact defect this project exists to avoid. After the setup, add
+#   push:
+#     tags: ["v*"]
+# back under `on:` and tag releases as usual.
 name: npm publish
 
 on:
-  push:
-    tags: ["v*"]
   workflow_dispatch:
 
 permissions:
@@ -30,11 +35,9 @@ jobs:
           git diff --exit-code lib/client.js
       - name: Refuse to publish if the tests fail
         run: node --test
-      - name: Refuse to publish a tag that does not match the version
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Refuse to publish a version that is not tagged
         run: |
-          tag="${GITHUB_REF_NAME#v}"
           version="$(node -p "require('./package.json').version")"
-          test "$tag" = "$version" || { echo "tag $tag does not match version $version"; exit 1; }
+          git rev-parse -q --verify "refs/tags/v$version" >/dev/null || { echo "no tag v$version"; exit 1; }
       - name: Publish with provenance
         run: npm publish --provenance --access public
