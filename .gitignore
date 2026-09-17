@@ -1,0 +1,3 @@
+node_modules/
+# lib/client.js is generated but committed on purpose: the harness serves it
+# straight from the repository, and `dsh plugin add github:...` has no build step.
