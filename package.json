@@ -1,6 +1,6 @@
 {
   "name": "dsh-privacy-guard",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "type": "module",
   "description": "DeepSeek Harness 发送前隐私检查：在你把手机号、身份证号、银行卡号或 API 密钥发给模型之前提醒你，并支持一键打码。",
@@ -20,8 +20,8 @@
   },
   "files": [
     "index.js",
-    "lib/patterns.js",
-    "lib/client.js",
+    "cordis.patch.yml",
+    "lib",
     "README.md",
     "README.zh.md",
     "LICENSE"
@@ -38,6 +38,9 @@
     "url": "git+https://github.com/ciceroyang/dsh-privacy-guard.git"
   },
   "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
     "client": {
       "platform": "web",
       "immediately": true

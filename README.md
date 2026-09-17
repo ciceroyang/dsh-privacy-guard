@@ -25,7 +25,21 @@ order number that looks like a card, or a long numeric id that looks like an ID 
 
 Requires Node.js 20 or newer and a DeepSeek Harness web profile.
 
-    dsh plugin --profile web add github:ciceroyang/dsh-privacy-guard#v0.1.0
+    dsh plugin --profile web add github:ciceroyang/dsh-privacy-guard#v0.1.1
+
+One command installs the package and mounts it: the manifest declares `dsh.bundle`, so the
+profile adds the package to its loader tree, and the browser half is served from
+`exports["./client"]`.
+
+From a local checkout instead, mount it by hand:
+
+    ln -sfn "$PWD/dsh-privacy-guard" ~/.dsh/profiles/web/node_modules/dsh-privacy-guard
+    # then in ~/.dsh/profiles/web/cordis.patch.yml
+    - insert:
+        - id: privacy-guard
+          name: dsh-privacy-guard
+
+The web profile reloads the patch live; refresh the page afterwards.
 
 No build step: the browser bundle is committed and served as-is.
 

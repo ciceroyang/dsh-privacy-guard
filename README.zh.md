@@ -24,7 +24,20 @@
 
 需要 Node.js 20 或更新版本，以及 DeepSeek Harness 的 web profile。
 
-    dsh plugin --profile web add github:ciceroyang/dsh-privacy-guard#v0.1.0
+    dsh plugin --profile web add github:ciceroyang/dsh-privacy-guard#v0.1.1
+
+一条命令就装好并挂载：manifest 里声明了 `dsh.bundle`，profile 会把它加入 loader 树，浏览器端
+则通过 `exports["./client"]` 提供。
+
+想从本地源码目录加载，就手动挂：
+
+    ln -sfn "$PWD/dsh-privacy-guard" ~/.dsh/profiles/web/node_modules/dsh-privacy-guard
+    # 然后写进 ~/.dsh/profiles/web/cordis.patch.yml
+    - insert:
+        - id: privacy-guard
+          name: dsh-privacy-guard
+
+web profile 会热重载 patch，之后刷新页面即可。
 
 无需构建：浏览器端产物已提交在仓库里，直接加载。
 

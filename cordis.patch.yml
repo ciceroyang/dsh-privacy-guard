@@ -1,0 +1,8 @@
+# dsh-privacy-guard bundle patch layer.
+# A profile that lists this bundle applies it after every bundle layer, which
+# is what mounts the host half. The browser half then reaches the page through
+# exports["./client"] and the dsh.client declaration, not through this file.
+# Rows reference the package by name so Node resolution finds the installed code.
+- insert:
+    - id: privacy-guard
+      name: dsh-privacy-guard
